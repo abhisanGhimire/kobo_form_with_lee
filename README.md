@@ -46,3 +46,7 @@ Migrate database tables
 ```
 php artisan migrate
 ```
+Push code
+```
+git push -u origin master
+```
