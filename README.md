@@ -46,6 +46,22 @@ Migrate database tables
 ```
 php artisan migrate
 ```
+
+# Maintenance process
+
+Pull code
+```
+git pull
+```
+Add code to git
+```
+git add .
+```
+Commit code
+```
+git commit -m "message_you_want_to_convey"
+```
+
 Push code
 ```
 git push -u origin master
