@@ -11,11 +11,18 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
+Route::redirect('/','/en/home');
+Route::group(['prefix'=>'{language}'],function(){
 
-Route::get('/', 'ApiTestController@index');
+Auth::routes([
 
+    'register' => false, // Register Routes...
 
-Auth::routes();
+    'reset'    => false, // Reset Password Routes...
 
+    'verify'   => false, // Email Verification Routes...
+
+]);
 Route::get('/home', 'HomeController@index')->name('home');
+});

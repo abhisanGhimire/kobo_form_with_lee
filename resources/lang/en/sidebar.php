@@ -12,12 +12,7 @@ return [
     | these language lines according to your application's requirements.
     |
      */
-    'login_title'   => 'Enter Your Credentials',
-    'email_address' => 'E-mail Address',
-    'password'      => 'Password',
-    'remember_me'   => 'Remember Me',
-    'login'         => 'Login',
-    'failed'        => 'These credentials do not match our records.',
-    'throttle'      => 'Too many login attempts. Please try again in :seconds seconds.',
-
+    'dashboard_home'   => 'Dashboard',
+    'language_select'=>'Select Language',
+    'logout' => 'Logout',
 ];

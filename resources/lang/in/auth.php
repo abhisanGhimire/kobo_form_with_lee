@@ -12,11 +12,11 @@ return [
     | these language lines according to your application's requirements.
     |
      */
-    'login_title'   => 'Enter Your Credentials',
-    'email_address' => 'E-mail Address',
-    'password'      => 'Password',
-    'remember_me'   => 'Remember Me',
-    'login'         => 'Login',
+    'login_title'   => 'Enter Your Credentials(Hindi)',
+    'email_address' => 'ईमेल Address(Hindi)',
+    'password'      => 'Password(Hindi)',
+    'remember_me'   => 'Remember Me(Hindi)',
+    'login'         => 'Login(Hindi)',
     'failed'        => 'These credentials do not match our records.',
     'throttle'      => 'Too many login attempts. Please try again in :seconds seconds.',
 
