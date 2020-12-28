@@ -4,7 +4,7 @@
         <i class="fas fa-bars"></i>
     </button>
     <ul class="c-header-nav d-md-down-none">
-    <li class="c-header-nav-item px-3"><a class="c-header-nav-link" href="{{ route('test',app()->getlocale()) }}">test</a></li>
+    <li class="c-header-nav-item px-3"><a class="c-header-nav-link" href="#"></a></li>
     </ul>
 
 </header>
