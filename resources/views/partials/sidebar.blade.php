@@ -8,8 +8,15 @@
                 {{ __('sidebar.dashboard_home') }}
             </a>
         </li>
-        <li class="c-sidebar-nav-item">
 
+
+        <li class="c-sidebar-nav-item">
+            <a class="c-sidebar-nav-link" href="{{ route('home.kobodatatable',app()->getlocale()) }}">
+            View All Information
+            </a>
+        </li>
+
+        {{-- <li class="c-sidebar-nav-item">
             <span class="c-sidebar-nav-link">{{ __('sidebar.language_select') }}
                 <div>
                     <a href="{{ route(Route::currentRouteName(),'in') }}" class="float-right ml-2"><img
@@ -18,7 +25,8 @@
                             src="{{ asset('language_assets/en.svg') }}" height="25"></a>
                 </div>
             </span>
-        </li>
+        </li> --}}
+
         <li class="c-sidebar-nav-item">
             <a class="c-sidebar-nav-link" href="{{ route('logout',app()->getlocale()) }}" onclick="event.preventDefault();
             document.getElementById('logout-form').submit();">

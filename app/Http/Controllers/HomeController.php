@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DataTables;
 use App\Kobo_data;
 use Illuminate\Support\Facades\Http;
+
 class HomeController extends Controller
 {
     /**
@@ -17,17 +19,34 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
+
     public function index()
     {
+        //$this->get_kobo_data();
         return view('home');
     }
 
-    private function __get_kobo_data()
+    public function KoboDataTable(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = Kobo_data::latest()->get();
+            return Datatables::of($data)
+                    ->addIndexColumn()
+                    ->addColumn('action', function($row){
+
+                           $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">View</a>';
+
+                            return $btn;
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        }
+
+        return view('kobo_data_table');
+    }
+
+
+    private function get_kobo_data()
     {
 
         //Assign variable for all data property
@@ -288,7 +307,7 @@ class HomeController extends Controller
         // if($iteration_variable=14){
         //     dd($decode_data_kobo[14]);
         // }
-        return view('apitest');
+       dd('successfulle_saved');
         //dd("successfully saved");
     }
 }

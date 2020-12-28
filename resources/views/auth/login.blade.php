@@ -6,10 +6,10 @@
         <div class="col-md-8">
             <div class="card">
                 <div class=" card-header">{{ __('auth.login_title') }}
-                    <a href="{{ route(Route::currentRouteName(),'in') }}" class="float-right ml-3"><img src="{{ asset('language_assets/in.svg') }}"
+                    {{-- <a href="{{ route(Route::currentRouteName(),'in') }}" class="float-right ml-3"><img src="{{ asset('language_assets/in.svg') }}"
                             height="25"></a>
                     <a href="{{ route(Route::currentRouteName(),'en') }}" class="float-right"> <img src="{{ asset('language_assets/en.svg') }}" height="25"></a>
-                </div>
+        --}}        </div>
                 <div class="card-body">
                     <form method="POST" action="{{ route('login',app()->getlocale()) }}">
                         @csrf
