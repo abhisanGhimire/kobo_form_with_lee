@@ -46,7 +46,10 @@ Migrate database tables
 ```
 php artisan migrate
 ```
-
+Seed the database
+```
+php artisan db:seed
+```
 # Maintenance process
 
 Pull code
