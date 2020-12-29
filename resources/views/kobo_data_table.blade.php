@@ -18,6 +18,7 @@
                         <th>Location of Survey</th>
                         <th>Containment Type</th>
                         <th>Primary Source of Water</th>
+                        <th>Date</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -31,18 +32,24 @@
     var table = $('#table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('home.kobodatatable',app()->getlocale()) }}",
+        ajax: "{{ route('home.kobodatatable') }}",
         columns: [
             {data: 'DT_RowIndex', name: 'DT_RowIndex'},
             {data: 'name_of_surveyor', name: 'name_of_surveyor'},
             {data: 'location_of_survey', name: 'location_of_survey'},
             {data:'kind_of_containment',name:'kind_of_containment'},
             {data:'primary_source_of_water',name:'primary_source_of_water'},
-
+            {data:'date',name:'date'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
     });
 
   });
+  $('#table').DataTable( {
+    columnDefs: [ {
+      targets: 6,
+      render: $.fn.dataTable.render.moment( 'Do MMM YYYY' )
+    } ]
+  } );
 </script>
 @endsection

@@ -11,6 +11,8 @@
             crossorigin="anonymous" />
         <!-- CoreUI CSS -->
         <link rel="stylesheet" href="https://unpkg.com/@coreui/coreui/dist/css/coreui.min.css" crossorigin="anonymous">
+
+        {{-- chart.js --}}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
         <title>{{ config('app.name', 'Kobo Visualization') }}</title>
     </head>

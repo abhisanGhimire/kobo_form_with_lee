@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use DataTables;
 use App\Kobo_data;
+use DataTables;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class HomeController extends Controller
@@ -20,11 +21,38 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
-
     public function index()
     {
-        $this->get_kobo_data();
-        return view('home');
+        //   /$this->get_kobo_data();
+        $title_page = "Survey dashboard";
+        //function() calls
+        $unique_date = $this->get_unique_dates();
+        $value       = $this->get_unique_dates_values();
+
+        //return View
+        return view('home', compact('title_page', 'unique_date', 'value'));
+    }
+
+    public function get_unique_dates()
+    {
+        //Get unique dates from database
+        $unique_date = DB::table('kobo_datas')->get()->pluck('date')->unique();
+        return $unique_date;
+    }
+
+    public function get_unique_dates_values()
+    {
+        //Get unique dates from database
+        $unique_date = DB::table('kobo_datas')->get()->pluck('date')->unique();
+        //Iteration variable
+        $iteration_variable = 0;
+        //For obtaining total survey on each date
+        foreach ($unique_date as $dates) {
+
+            $value[$iteration_variable] = DB::table('kobo_datas')->where('date', $dates)->get()->count();
+            $iteration_variable++;
+        }
+        return $value;
     }
 
     public function KoboDataTable(Request $request)
@@ -32,20 +60,19 @@ class HomeController extends Controller
         if ($request->ajax()) {
             $data = Kobo_data::latest()->get();
             return Datatables::of($data)
-                    ->addIndexColumn()
-                    ->addColumn('action', function($row){
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
 
-                           $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">View</a>';
+                    $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">View</a>';
 
-                            return $btn;
-                    })
-                    ->rawColumns(['action'])
-                    ->make(true);
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
         }
-
-        return view('kobo_data_table');
+        $title_page = "Survey Information";
+        return view('kobo_data_table', compact('title_page'));
     }
-
 
     private function get_kobo_data()
     {
@@ -139,7 +166,9 @@ class HomeController extends Controller
                 $kobo_info->no_of_users = $decode_data_kobo[$iteration_variable]->$no_of_users;
             }
             if (property_exists($decode_data_kobo[$iteration_variable], $date)) {
-                $kobo_info->date = $decode_data_kobo[$iteration_variable]->$date;
+
+                $temp_date       = $decode_data_kobo[$iteration_variable]->$date;
+                $kobo_info->date = date('Y-m-d', strtotime($temp_date));
             }
             if (property_exists($decode_data_kobo[$iteration_variable], $ward_no)) {
                 $kobo_info->ward_no = $decode_data_kobo[$iteration_variable]->$ward_no;
@@ -307,16 +336,6 @@ class HomeController extends Controller
             $kobo_info->save();
 
         }
-        // if($iteration_variable=14){
-        //     dd($decode_data_kobo[14]);
-        // }
-       dd('successfully_saved');
-        //dd("successfully saved");
+
     }
 }
-
-// $name_of_respondent="group_yg8fg26/_14_Name_of_respondent";
-// //$distance_of_vehicle_can_be_parked="group_sb8fk53/group_pf7bx71/g_What_is_the_dista_ehicle_can_be_parked";
-// //$name_of_respondent = $all_info[0];
-// //dd($name_of_respondent);
-
