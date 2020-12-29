@@ -1,4 +1,4 @@
-<div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show __web-inspector-hide-shortcut__" id="sidebar">
+<div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-sm __web-inspector-hide-shortcut__" id="sidebar">
     <div class="c-sidebar-brand d-md-down-none">
         {{ config('app.name', 'Kobo Visualization') }}
     </div>

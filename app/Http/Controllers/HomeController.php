@@ -23,14 +23,23 @@ class HomeController extends Controller
 
     public function index()
     {
-        //   /$this->get_kobo_data();
+           $this->get_kobo_data();
         $title_page = "Survey dashboard";
         //function() calls
         $unique_date = $this->get_unique_dates();
-        $value       = $this->get_unique_dates_values();
+        $value = $this->get_unique_dates_values();
+        $unique_source_of_water = $this->get_unique_source_of_water();
+        $value_source_of_water = $this->get_unique_source_of_water_values();
+        $unique_containment_unit = $this->get_unique_containment_unit();
+        $value_containment_unit = $this->get_unique_containment_unit_value();
+        $unique_water_supply = $this->get_unique_water_supply();
+        $value_water_supply = $this->get_unique_water_supply_value();
+
+        //dd($this->get_unique_source_of_water());
 
         //return View
-        return view('home', compact('title_page', 'unique_date', 'value'));
+        return view('home', compact('title_page', 'unique_date', 'value','unique_source_of_water','value_source_of_water','unique_containment_unit','value_containment_unit','unique_water_supply',
+        'value_water_supply' ));
     }
 
     public function get_unique_dates()
@@ -53,6 +62,131 @@ class HomeController extends Controller
             $iteration_variable++;
         }
         return $value;
+    }
+
+    public function get_unique_source_of_water()
+    {
+        //Get unique sources of water from database
+        $unique_source_of_water = DB::table('kobo_datas')->get()->pluck('primary_source_of_water')->unique();
+        $iteration_variable = 0;
+        foreach ($unique_source_of_water as $source_of_water) {
+           
+        if($source_of_water=='municipal_piped_supply'){
+            $water_source[$iteration_variable] = "Municipal Pipe";
+        }
+        if($source_of_water=='own_source__pump_motor'){
+            $water_source[$iteration_variable] = "Pump Motor";
+        }
+        if($source_of_water=='household_owned_tube_well'){
+            $water_source[$iteration_variable] = "Household Tube Well";
+        }
+        if($source_of_water=='community_tube_well'){
+            $water_source[$iteration_variable] = "Community Tube Well";
+        }
+        if($source_of_water=='pond'){
+            $water_source[$iteration_variable] = "Pond";
+        }
+        if($source_of_water=='river_canal'){
+            $water_source[$iteration_variable] = "River/Canal";
+        }
+        if($source_of_water=='neighbor_tube_well'){
+            $water_source[$iteration_variable] = "Neighbor Tube Well";
+        }
+        if($source_of_water=='private_tankers'){
+            $water_source[$iteration_variable] = "Private Tankers";
+        }
+        if($source_of_water=='others'){
+            $water_source[$iteration_variable] = "Others";
+        }
+        if($source_of_water==null){
+            $water_source[$iteration_variable] = "No Answer";
+        }
+        $iteration_variable++;
+    }
+        return $water_source;
+    }
+
+    public function get_unique_source_of_water_values()
+    {
+        $unique_source_of_water = DB::table('kobo_datas')->get()->pluck('primary_source_of_water')->unique();
+        $iteration_variable = 0;
+        foreach ($unique_source_of_water as $primary_source_of_water) {
+
+            $value_source_of_water[$iteration_variable] = DB::table('kobo_datas')->where('primary_source_of_water', $primary_source_of_water)->get()->count();
+            $iteration_variable++;
+        }
+        return $value_source_of_water;
+    }
+
+    public function get_unique_containment_unit()
+    {
+        //Get unique containment unit from database
+        $unique_containment_unit = DB::table('kobo_datas')->get()->pluck('kind_of_containment')->unique();
+        $iteration_variable = 0;
+        foreach ($unique_containment_unit as $containment_unit) {
+           
+        if($containment_unit=='septic_tank'){
+            $type_containment_unit[$iteration_variable] = "Septic Tank";
+        }
+        if($containment_unit=='twin_pit'){
+            $type_containment_unit[$iteration_variable] = "Twin Pit";
+        }
+        if($containment_unit=='single_pit'){
+            $type_containment_unit[$iteration_variable] = "Single Pit";
+        }
+        if($containment_unit=='others'){
+            $type_containment_unit[$iteration_variable] = "Others";
+        }
+        $iteration_variable++;
+    }
+        return $type_containment_unit;
+    }
+
+    public function get_unique_containment_unit_value()
+    {
+        $unique_containment_unit = DB::table('kobo_datas')->get()->pluck('kind_of_containment')->unique();
+        $iteration_variable = 0;
+        foreach ($unique_containment_unit as $kind_of_containment) {
+
+            $value_containment_unit[$iteration_variable] = DB::table('kobo_datas')->where('kind_of_containment', $kind_of_containment)->get()->count();
+            $iteration_variable++;
+        }
+        return $value_containment_unit;
+    }
+    public function get_unique_water_supply()
+    {
+        //Get unique containment unit from database
+        $unique_water_supply = DB::table('kobo_datas')->get()->pluck('frequency_of_water_supply')->unique();
+        $iteration_variable = 0;
+        foreach ($unique_water_supply as $water_supply) {
+           
+        if($water_supply=='everyday'){
+            $frequency_of_supply[$iteration_variable] = "Everyday";
+        }
+        if($water_supply=='once_in_two_days'){
+            $frequency_of_supply[$iteration_variable] = "Once In Two Days";
+        }
+        if($water_supply=='once_in_three_days'){
+            $frequency_of_supply[$iteration_variable] = "Once In Three Days";
+        }
+        if($water_supply=='once_per_week'){
+            $frequency_of_supply[$iteration_variable] = "Once Per Week";
+        }
+        $iteration_variable++;
+    }
+        return $frequency_of_supply;
+    }
+
+    public function get_unique_water_supply_value()
+    {
+        $unique_water_supply = DB::table('kobo_datas')->get()->pluck('frequency_of_water_supply')->unique();
+        $iteration_variable = 0;
+        foreach ($unique_water_supply as $frequency_of_water_supply) {
+
+            $value_water_supply[$iteration_variable] = DB::table('kobo_datas')->where('frequency_of_water_supply', $frequency_of_water_supply)->get()->count();
+            $iteration_variable++;
+        }
+        return $value_water_supply;
     }
 
     public function KoboDataTable(Request $request)
@@ -78,63 +212,63 @@ class HomeController extends Controller
     {
 
         //Assign variable for all data property
-        $location_of_survey                             = "Please_take_a_fer_mi_";
-        $name_of_surveyor                               = "Name_of_the_surveyor_";
-        $date                                           = "Date_";
-        $ward_no                                        = "Location_Name_of_ro_number_";
-        $id                                             = "_id";
-        $gps_location                                   = "_geolocation";
-        $primary_source_of_water                        = "_1_What_is_the_primary_source_";
-        $other_source_of_water                          = "What_is_the_other_so_ater_";
-        $frequency_of_water_supply                      = "_2_What_is_the_frequency_of_po";
-        $hours_of_water_supply                          = "Hours_of_supply_";
-        $type_of_toilet                                 = "_3_What_is_the_type_of_toilet";
-        $other_type_of_toilet                           = "What_is_the_other_ty_f_toilet_";
-        $no_of_users                                    = "_4_Number_of_users_";
-        $kind_of_containment                            = "What_is_the_kind_of_containmen";
-        $other_kind_of_containment                      = "What_is_the_other_ki_";
-        $what_happens_when_filled                       = "What_happens_when_a_pit_septic";
-        $other_done_when_filled                         = "What_is_the_other_th_ne_";
-        $why_call                                       = "_7_Why_did_the_housefold_call_";
-        $other_reason_to_call                           = "What_was_the_other_r_o_call_";
-        $last_desludged_pit_tank                        = "_8_When_was_the_pit_";
-        $how_often_desludged                            = "_9_How_often_do_you_";
-        $who_desludges                                  = "_10_Who_desludges_the_pit_sept";
-        $who_other_desludges                            = "if_other_who_";
-        $how_much_payment                               = "_11_How_much_do_you_";
-        $where_does_waste_water_go                      = "_12_Where_does_the_wastewater_f";
-        $where_other_waste_water_go                     = "If_other_where_does_it_go_";
-        $color_of_liquid                                = "_13_What_is_the_color_of_liqui";
-        $other_which_color                              = "If_other_which_color_";
-        $how_many_rings_single_pit                      = "group_wz1sn61/group_hu4oh09/a_How_many_rings_ar_the_pit_";
-        $height_of_rings_single_pit                     = "group_wz1sn61/group_hu4oh09/b_What_is_the_heigh_feet_";
-        $diameter_of_rings_single_pit                   = "group_wz1sn61/group_hu4oh09/c_What_is_the_diame_n_feet_";
-        $if_not_ring_diameter_single_pit                = "group_wz1sn61/group_hu4oh09/d_In_case_the_pit_i_";
-        $does_pit_cover_have_a_provision_single_pit     = "group_wz1sn61/group_hu4oh09/e_Does_the_pit_cove_";
-        $mention_type_of_arrangement_single_pit         = "group_wz1sn61/group_hu4oh09/If_yes_mention_the_ent_";
-        $outlet_in_the_pit_for_overflow_single_pit      = "group_wz1sn61/group_hu4oh09/f_Is_there_an_outle_";
-        $where_does_it_overflow_to_single_pit           = "group_wz1sn61/group_hu4oh09/If_yes_where_does_i_w_to_";
-        $distance_of_pit_from_parking_place_single_pit  = "group_wz1sn61/group_hu4oh09/g_What_is_the_dista_";
-        $how_many_rings_twin_pit                        = "group_wz1sn61/group_dk2kr06/a_How_many_rings_ar_ch_pit_";
-        $height_of_rings_twin_pit                       = "group_wz1sn61/group_dk2kr06/b_What_is_the_heigh_feet__001";
-        $diameter_of_rings_twin_pit                     = "group_wz1sn61/group_dk2kr06/c_What_is_the_diame_n_feet__001";
-        $if_not_ring_diameter_twin_pit                  = "group_wz1sn61/group_dk2kr06/d_In_case_the_pit_i__001";
-        $interlinking_connection_between_two_pits       = "group_wz1sn61/group_dk2kr06/e_Is_there_an_inter_pits_";
-        $outlet_in_the_pit_for_overflow_twin_pit        = "group_wz1sn61/group_dk2kr06/f_Is_there_an_outlet_in_the_p";
-        $where_does_it_overflow_to_twin_pit             = "group_wz1sn61/group_dk2kr06/If_yes_where_does_i_w_to__001";
-        $distance_of_pit_from_parking_place_twin_pit    = "group_wz1sn61/group_dk2kr06/g_What_is_the_dista__001";
-        $length_of_septic_tank                          = "group_wz1sn61/group_uw4sj24/a_What_is_the_lengt_feet_";
-        $width_of_septic_tank                           = "group_wz1sn61/group_uw4sj24/b_What_is_the_width_feet_";
-        $depth_of_septic_tank                           = "group_wz1sn61/group_uw4sj24/c_What_is_the_depth_";
-        $no_of_chambers_septic_tank                     = "group_wz1sn61/group_uw4sj24/d_How_many_numbers_c_tank_";
-        $septic_tank_have_manhole_covers                = "group_wz1sn61/group_uw4sj24/e_Does_the_septic_t_covers_";
-        $no_of_manholes                                 = "group_wz1sn61/group_uw4sj24/If_yes_number_of_manholes_";
-        $septic_tank_connection_to_soak_pit             = "group_wz1sn61/group_uw4sj24/f_Is_the_septic_tan_pit_";
-        $which_outlet_septic_tank_connected_to          = "group_wz1sn61/group_uw4sj24/If_no_which_outlet_d_to_";
+        $location_of_survey = "Please_take_a_fer_mi_";
+        $name_of_surveyor = "Name_of_the_surveyor_";
+        $date = "Date_";
+        $ward_no = "Location_Name_of_ro_number_";
+        $id = "_id";
+        $gps_location = "_geolocation";
+        $primary_source_of_water = "_1_What_is_the_primary_source_";
+        $other_source_of_water = "What_is_the_other_so_ater_";
+        $frequency_of_water_supply = "_2_What_is_the_frequency_of_po";
+        $hours_of_water_supply = "Hours_of_supply_";
+        $type_of_toilet = "_3_What_is_the_type_of_toilet";
+        $other_type_of_toilet = "What_is_the_other_ty_f_toilet_";
+        $no_of_users = "_4_Number_of_users_";
+        $kind_of_containment = "What_is_the_kind_of_containmen";
+        $other_kind_of_containment = "What_is_the_other_ki_";
+        $what_happens_when_filled = "What_happens_when_a_pit_septic";
+        $other_done_when_filled = "What_is_the_other_th_ne_";
+        $why_call = "_7_Why_did_the_housefold_call_";
+        $other_reason_to_call = "What_was_the_other_r_o_call_";
+        $last_desludged_pit_tank = "_8_When_was_the_pit_";
+        $how_often_desludged = "_9_How_often_do_you_";
+        $who_desludges = "_10_Who_desludges_the_pit_sept";
+        $who_other_desludges = "if_other_who_";
+        $how_much_payment = "_11_How_much_do_you_";
+        $where_does_waste_water_go = "_12_Where_does_the_wastewater_f";
+        $where_other_waste_water_go = "If_other_where_does_it_go_";
+        $color_of_liquid = "_13_What_is_the_color_of_liqui";
+        $other_which_color = "If_other_which_color_";
+        $how_many_rings_single_pit = "group_wz1sn61/group_hu4oh09/a_How_many_rings_ar_the_pit_";
+        $height_of_rings_single_pit = "group_wz1sn61/group_hu4oh09/b_What_is_the_heigh_feet_";
+        $diameter_of_rings_single_pit = "group_wz1sn61/group_hu4oh09/c_What_is_the_diame_n_feet_";
+        $if_not_ring_diameter_single_pit = "group_wz1sn61/group_hu4oh09/d_In_case_the_pit_i_";
+        $does_pit_cover_have_a_provision_single_pit = "group_wz1sn61/group_hu4oh09/e_Does_the_pit_cove_";
+        $mention_type_of_arrangement_single_pit = "group_wz1sn61/group_hu4oh09/If_yes_mention_the_ent_";
+        $outlet_in_the_pit_for_overflow_single_pit = "group_wz1sn61/group_hu4oh09/f_Is_there_an_outle_";
+        $where_does_it_overflow_to_single_pit = "group_wz1sn61/group_hu4oh09/If_yes_where_does_i_w_to_";
+        $distance_of_pit_from_parking_place_single_pit = "group_wz1sn61/group_hu4oh09/g_What_is_the_dista_";
+        $how_many_rings_twin_pit = "group_wz1sn61/group_dk2kr06/a_How_many_rings_ar_ch_pit_";
+        $height_of_rings_twin_pit = "group_wz1sn61/group_dk2kr06/b_What_is_the_heigh_feet__001";
+        $diameter_of_rings_twin_pit = "group_wz1sn61/group_dk2kr06/c_What_is_the_diame_n_feet__001";
+        $if_not_ring_diameter_twin_pit = "group_wz1sn61/group_dk2kr06/d_In_case_the_pit_i__001";
+        $interlinking_connection_between_two_pits = "group_wz1sn61/group_dk2kr06/e_Is_there_an_inter_pits_";
+        $outlet_in_the_pit_for_overflow_twin_pit = "group_wz1sn61/group_dk2kr06/f_Is_there_an_outlet_in_the_p";
+        $where_does_it_overflow_to_twin_pit = "group_wz1sn61/group_dk2kr06/If_yes_where_does_i_w_to__001";
+        $distance_of_pit_from_parking_place_twin_pit = "group_wz1sn61/group_dk2kr06/g_What_is_the_dista__001";
+        $length_of_septic_tank = "group_wz1sn61/group_uw4sj24/a_What_is_the_lengt_feet_";
+        $width_of_septic_tank = "group_wz1sn61/group_uw4sj24/b_What_is_the_width_feet_";
+        $depth_of_septic_tank = "group_wz1sn61/group_uw4sj24/c_What_is_the_depth_";
+        $no_of_chambers_septic_tank = "group_wz1sn61/group_uw4sj24/d_How_many_numbers_c_tank_";
+        $septic_tank_have_manhole_covers = "group_wz1sn61/group_uw4sj24/e_Does_the_septic_t_covers_";
+        $no_of_manholes = "group_wz1sn61/group_uw4sj24/If_yes_number_of_manholes_";
+        $septic_tank_connection_to_soak_pit = "group_wz1sn61/group_uw4sj24/f_Is_the_septic_tan_pit_";
+        $which_outlet_septic_tank_connected_to = "group_wz1sn61/group_uw4sj24/If_no_which_outlet_d_to_";
         $distance_of_pit_from_parking_place_septic_tank = "group_wz1sn61/group_uw4sj24/g_What_is_the_dista__002";
-        $name_of_respondent                             = "group_dx0bg42/_14_Name_of_respondent_";
-        $gender                                         = "group_dx0bg42/_15_Gender_";
-        $no_of_family_members                           = "group_dx0bg42/_16_Number_of_people_sehold_";
+        $name_of_respondent = "group_dx0bg42/_14_Name_of_respondent_";
+        $gender = "group_dx0bg42/_15_Gender_";
+        $no_of_family_members = "group_dx0bg42/_16_Number_of_people_sehold_";
 
         //Get data from API and store in $response_data_kobo
         $response_data_kobo = Http::withHeaders(['Authorization' => 'Token 4740f964c904b2eb34b9390d7e0d42c9eb2cd13a'])->get('https://kf.kobotoolbox.org/api/v2/assets/ahuBJcXH8mvvW2GjBPdKfM/data/?format=json');
@@ -167,7 +301,7 @@ class HomeController extends Controller
             }
             if (property_exists($decode_data_kobo[$iteration_variable], $date)) {
 
-                $temp_date       = $decode_data_kobo[$iteration_variable]->$date;
+                $temp_date = $decode_data_kobo[$iteration_variable]->$date;
                 $kobo_info->date = date('Y-m-d', strtotime($temp_date));
             }
             if (property_exists($decode_data_kobo[$iteration_variable], $ward_no)) {
@@ -177,7 +311,7 @@ class HomeController extends Controller
                 $kobo_info->id_kobo = $decode_data_kobo[$iteration_variable]->$id;
             }
             if (property_exists($decode_data_kobo[$iteration_variable], $gps_location)) {
-                $kobo_info->gps_location_lat  = $decode_data_kobo[$iteration_variable]->$gps_location[0];
+                $kobo_info->gps_location_lat = $decode_data_kobo[$iteration_variable]->$gps_location[0];
                 $kobo_info->gps_location_long = $decode_data_kobo[$iteration_variable]->$gps_location[1];
             }
             if (property_exists($decode_data_kobo[$iteration_variable], $primary_source_of_water)) {

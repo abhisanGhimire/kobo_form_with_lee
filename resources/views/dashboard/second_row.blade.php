@@ -1,37 +1,37 @@
-<div class="col-md-6">
+<div class="col-md-12">
     <div class="card">
         <div class="card-header d-flex ">
-            <div class="mr-auto">Type of Containment Unit</div>
+            <div class="mr-auto">Primary source of water</div>
         </div>
         <div class="card-body">
-            <canvas id="water_supply" width="400" height="400"></canvas>
+            <canvas id="total_primary_source_of_water" width="100" height="30"></canvas>
             <script>
-                var unique_water_supply=
+                var unique_source_of_water=
                         [
-                            @foreach ($unique_water_supply as $frequency_of_supply)
-                            '{{$frequency_of_supply}}',
+                            @foreach ($unique_source_of_water as $primary_source_of_water)
+                            '{{$primary_source_of_water}}',
                             @endforeach
 
                         ];
-                        var value_water_supply=
+                        var value_source_of_water=
                         [
-                            @foreach ($value_water_supply as $value_water_supply)
-                            '{{$value_water_supply}}',
+                            @foreach ($value_source_of_water as $value_source_of_waters)
+                            '{{$value_source_of_waters}}',
                             @endforeach
 
                         ];
-                console.log(unique_water_supply);
-              var ctx = document.getElementById('water_supply').getContext('2d');
+                console.log(unique_source_of_water);
+              var ctx = document.getElementById('total_primary_source_of_water').getContext('2d');
             var chart = new Chart(ctx, {
             // The type of chart we want to create
             type: 'bar',
             // The data for our dataset
             data: {
-                labels: unique_water_supply,
+                labels: unique_source_of_water,
                 datasets: [{
                     backgroundColor: "#fff176",
                     borderColor:  "#fff176",
-                    data: value_water_supply
+                    data: value_source_of_water
                 }]
             },
             

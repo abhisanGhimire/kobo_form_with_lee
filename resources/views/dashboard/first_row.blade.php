@@ -1,10 +1,10 @@
-<div class="col-md-6">
+<div class="col-md-12">
     <div class="card">
         <div class="card-header d-flex ">
             <div class="mr-auto">Total survey completed by date</div>
         </div>
         <div class="card-body">
-            <canvas id="total_survey_by_date" width="400" height="400"></canvas>
+            <canvas id="total_survey_by_date" width="10" height="3"></canvas>
             <script>
                 var unique_date=
                         [
