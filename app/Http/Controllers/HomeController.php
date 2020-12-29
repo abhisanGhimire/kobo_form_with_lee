@@ -16,13 +16,14 @@ class HomeController extends Controller
      */
     public function __construct()
     {
+        //Authentication middleware
         $this->middleware('auth');
     }
 
 
     public function index()
     {
-        //$this->get_kobo_data();
+        $this->get_kobo_data();
         return view('home');
     }
 
@@ -121,6 +122,8 @@ class HomeController extends Controller
         //Assign iteration variable
         $iteration_variable = 0;
 
+        //Remove previously saved values
+        Kobo_data::truncate();
         //Initiate loop
         for ($iteration_variable; $iteration_variable < $kobo_data_count; $iteration_variable++) {
             $kobo_info = new Kobo_data;
@@ -307,7 +310,7 @@ class HomeController extends Controller
         // if($iteration_variable=14){
         //     dd($decode_data_kobo[14]);
         // }
-       dd('successfulle_saved');
+       dd('successfully_saved');
         //dd("successfully saved");
     }
 }
